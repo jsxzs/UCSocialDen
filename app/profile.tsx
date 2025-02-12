@@ -8,21 +8,7 @@ import Sidebar from '../components/layout/Sidebar';
 export default function Profile() {
   const router = useRouter();
 
-  const handleNavigation = (tab) => {
-    switch (tab.toLowerCase()) {
-      case 'events':
-        router.push('/');
-        break;
-      case 'profile':
-        router.push('/profile');
-        break;
-      case 'clubs':
-        router.push('/clubs');
-        break;
-      default:
-        break;
-    }
-  };
+
 
   return (
     <View style={styles.container}>

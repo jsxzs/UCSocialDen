@@ -19,21 +19,6 @@ const HomeScreen = () => {
     goToToday,
   } = useCalendar(MOCK_EVENTS);
 
-  const handleNavigation = (tab) => {
-    switch (tab.toLowerCase()) {
-      case 'events':
-        router.push('/');
-        break;
-      case 'profile':
-        router.push('/profile');
-        break;
-      case 'clubs':
-        router.push('/clubs');
-        break;
-      default:
-        break;
-    }
-  };
 
   return (
     <View style={styles.container}>

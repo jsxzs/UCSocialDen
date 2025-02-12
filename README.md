@@ -14,7 +14,9 @@ nvm use 22
 nvm alias default 22
 
 npm cache clean --force
+
 rm -rf node_modules package-lock.json
+
 npm install
 
 npm expo start

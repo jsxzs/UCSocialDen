@@ -1,4 +1,8 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native";
+// pop-up screen for event details
+// Show a picture of the event, event creator, event time, and the event name, description, and a list of people who have joined the event.
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Dimensions, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 export default function Index() {
   // Sample data for joined users (replace with real data from an API)
@@ -6,64 +10,65 @@ export default function Index() {
     { id: 1, avatar: "https://via.placeholder.com/50" },
     { id: 2, avatar: "https://via.placeholder.com/50" },
     { id: 3, avatar: "https://via.placeholder.com/50" },
+    { id: 4, avatar: "https://via.placeholder.com/50" },
+    { id: 5, avatar: "https://via.placeholder.com/50" },
   ];
 
   return (
-    <View style={styles.container}>
-      {/* Event Title */}
-      <Text style={styles.title}>Event Name</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        {/* Event Title */}
+        <Text style={styles.title}>Event Name</Text>
 
-      {/* Description Box */}
-      <Text style={styles.label}>Description</Text>
-      <TextInput 
-        style={styles.descriptionBox} 
-        placeholder="Enter event description" 
-        editable={false} 
-      />
+        {/* Description Box */}
+        <Text style={styles.label}>Description</Text>
+        <TextInput
+          style={styles.descriptionBox}
+          placeholder="Enter event description"
+          editable={false}
+        />
 
-      {/* Joined People Section */}
-      <View style={styles.joinSection}>
-        <View style={styles.joinedPeopleContainer}>
+        {/* Joined People Section */}
+        <View style={styles.joinSection}>
           <Text style={styles.label}>Joined people</Text>
           <View style={styles.profileContainer}>
             {joinedPeople.map((person) => (
-              <Image 
-                key={person.id} 
-                source={{ uri: person.avatar }} 
-                style={styles.profileCircle} 
+              <Image
+                key={person.id}
+                source={{ uri: person.avatar }}
+                style={styles.profileCircle}
               />
             ))}
           </View>
         </View>
 
-        {/* Join Button (Aligned to the Right) */}
+        {/* Join Button */}
         <TouchableOpacity style={styles.joinButton}>
           <Text style={styles.buttonText}>Join</Text>
         </TouchableOpacity>
-      </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
     backgroundColor: "#fafafa",
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    alignItems: "center",
     padding: 20,
-    paddingTop: 0,
-    borderRadius: 10,
-    borderWidth: 3,
-    borderColor: "#556ebe",
-    width: "90%",
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 10,
-    marginTop: -20,
+    textAlign: "center",
   },
   label: {
     fontSize: 16,
@@ -72,44 +77,43 @@ const styles = StyleSheet.create({
   },
   descriptionBox: {
     width: "100%",
-    height: 80,
+    minHeight: 80,
     backgroundColor: "#f5f0e5",
     borderRadius: 5,
     padding: 10,
     marginBottom: 15,
+    textAlignVertical: "top",
   },
   joinSection: {
-    flexDirection: "row",
     width: "100%",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    marginBottom: 15,
-  },
-  joinedPeopleContainer: {
-    flex: 1, 
+    alignItems: "center",
   },
   profileContainer: {
     flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
     marginTop: 5,
   },
   profileCircle: {
     width: 40,
     height: 40,
-    borderRadius: 20, // Makes it a perfect circle
-    marginRight: 5,
-    backgroundColor: "#d2deef", // Placeholder color
+    borderRadius: 20,
+    margin: 5,
+    backgroundColor: "#d2deef",
   },
   joinButton: {
     backgroundColor: "#556ebe",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 15,
+    marginTop: 20,
+    width: width * 0.8,
   },
   buttonText: {
     color: "white",
     fontWeight: "bold",
+    fontSize: 16,
   },
 });

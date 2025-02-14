@@ -1,5 +1,5 @@
 #configs
-/configs/config.env
+./configs/config.env
 
 # Xcode
 !**/*.xcodeproj

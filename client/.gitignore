@@ -71,7 +71,7 @@ local.properties
 .kotlin/
 
 # Node
-node_modules
+node_modules/
 *.log
 .nvm
 package-lock.json

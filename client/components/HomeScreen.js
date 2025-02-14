@@ -86,12 +86,12 @@ export default function HomeScreen() {
         visible={!!selectedEvent}
         onRequestClose={() => setSelectedEvent(null)}
       >
-        {selectedEvent && <EventDetails event={selectedEvent} />}
-      
+        {selectedEvent && <EventDetails event={selectedEvent} onClose={() => setSelectedEvent(null)}/>}
+      </Modal>
 
       <StatusBar hidden={true} />
       <TopNavBar activeTab="Events" />
-      </Modal>
+
       <View style={styles.mainContent}>
         <Sidebar />
         

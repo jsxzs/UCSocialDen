@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image, StatusBar, Modal } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { COLORS, MOCK_EVENTS } from '../utils/constants';
@@ -10,7 +10,7 @@ import CreateEventForm from './CreateEventForm';
 import EventCard from './EventCard';
 import EventDetails from './EventDetails';
 
-const HomeScreen = () => {
+export default function HomeScreen() {
   const router = useRouter();
   const {
     currentMonth,
@@ -21,7 +21,50 @@ const HomeScreen = () => {
     setSelectedDate,
     goToToday,
   } = useCalendar(MOCK_EVENTS);
+  
+  const [events, setEvents] = useState([]);
+  // This method fetches the records from the database.
+  useEffect(() => {
+    // console.log("Fetched data:", events);
+    async function getEvents() {
+      // console.log("Fetching events from:", process.env.EXPO_PUBLIC_BACKEND_URL);
+      // const response = await fetch('${process.env.EXPO_PUBLIC_BACKEND_URL}/');
+      const response = await fetch(`http://localhost:5050/`);
+      if (!response.ok) {
+        const message = `An error occurred: ${response.statusText}`;
+        console.error(message);
+        return;
+      }
+      console.log("response:", response);
+      const events = await response.json();
+      setEvents(events);
+    }
+    getEvents();
+    return;
+  }, [events.length]);
 
+  function eventList() {
+    return events.map((event) => (
+      <View key={event.id} style={styles.eventCard}>
+        <View style={styles.eventHeader}>
+          <View>
+            <Text style={styles.eventTitle}>{event.title}</Text>
+            <Text style={styles.eventCategory}>{event.category}</Text>
+          </View>
+          <View style={styles.eventInfo}>
+            <Text style={styles.eventDetails}>Start: {event.start}</Text>
+            <Text style={styles.eventDetails}>End: {event.end}</Text>
+            <Text style={styles.eventDetails}>Location: {event.location}</Text>
+          </View>
+        </View>
+        <Text style={styles.eventDescription}>{event.description}</Text>
+        {event.image && (
+          <Image source={{ uri: 'https://via.placeholder.com/100' }} style={styles.eventImage} />
+        )}
+        <Text style={styles.eventLimit}>Cur joined / limit</Text>
+      </View>
+    ))
+  }
 
   const [isCreateEventFormVisible, setIsCreateEventFormVisible] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -186,4 +229,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+// export default HomeScreen;

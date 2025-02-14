@@ -7,6 +7,7 @@ import { useRouter } from 'expo-router';
 import TopNavBar from './layout/TopNavBar';
 import Sidebar from './layout/Sidebar';
 import CreateEventForm from './CreateEventForm';
+import EventCard from './EventCard';
 
 const HomeScreen = () => {
   const router = useRouter();
@@ -67,26 +68,9 @@ const HomeScreen = () => {
 
           {/* Event Cards */}
           <ScrollView>
-            {MOCK_EVENTS.map((event) => (
-              <View key={event.id} style={styles.eventCard}>
-                <View style={styles.eventHeader}>
-                  <View>
-                    <Text style={styles.eventTitle}>{event.title}</Text>
-                    <Text style={styles.eventCategory}>{event.category}</Text>
-                  </View>
-                  <View style={styles.eventInfo}>
-                    <Text style={styles.eventDetails}>Start: {event.start}</Text>
-                    <Text style={styles.eventDetails}>End: {event.end}</Text>
-                    <Text style={styles.eventDetails}>Location: {event.location}</Text>
-                  </View>
-                </View>
-                <Text style={styles.eventDescription}>{event.description}</Text>
-                {event.image && (
-                  <Image source={{ uri: 'https://via.placeholder.com/100' }} style={styles.eventImage} />
-                )}
-                <Text style={styles.eventLimit}>Cur joined / limit</Text>
-              </View>
-            ))}
+          {MOCK_EVENTS.map((event) => (
+            <EventCard key={event.id} event={event} />
+          ))}
           </ScrollView>
         </View>
       </View>

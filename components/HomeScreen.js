@@ -69,7 +69,9 @@ const HomeScreen = () => {
           {/* Event Cards */}
           <ScrollView>
           {MOCK_EVENTS.map((event) => (
-            <EventCard key={event.id} event={event} />
+            <TouchableOpacity>
+              <EventCard key={event.id} event={event} />
+            </TouchableOpacity> 
           ))}
           </ScrollView>
         </View>

@@ -8,6 +8,7 @@ import TopNavBar from './layout/TopNavBar';
 import Sidebar from './layout/Sidebar';
 import CreateEventForm from './CreateEventForm';
 import EventCard from './EventCard';
+import EventDetails from './EventDetails';
 
 const HomeScreen = () => {
   const router = useRouter();
@@ -23,6 +24,7 @@ const HomeScreen = () => {
 
 
   const [isCreateEventFormVisible, setIsCreateEventFormVisible] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   return (
     <View style={styles.container}>
@@ -35,9 +37,18 @@ const HomeScreen = () => {
         <CreateEventForm setIsCreateEventFormVisible={setIsCreateEventFormVisible} />
       </Modal>
 
+      {/* Event details modal (Opens when event card is clicked) */}
+      <Modal
+        transparent={true}
+        visible={!!selectedEvent}
+        onRequestClose={() => setSelectedEvent(null)}
+      >
+        {selectedEvent && <EventDetails event={selectedEvent} />}
+      
+
       <StatusBar hidden={true} />
       <TopNavBar activeTab="Events" />
-      
+      </Modal>
       <View style={styles.mainContent}>
         <Sidebar />
         
@@ -69,7 +80,7 @@ const HomeScreen = () => {
           {/* Event Cards */}
           <ScrollView>
           {MOCK_EVENTS.map((event) => (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => setSelectedEvent(event)}>
               <EventCard key={event.id} event={event} />
             </TouchableOpacity> 
           ))}

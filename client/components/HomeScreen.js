@@ -6,8 +6,9 @@ import { useCalendar } from '../hooks/useCalendar';
 import { useRouter } from 'expo-router';
 import TopNavBar from './layout/TopNavBar';
 import Sidebar from './layout/Sidebar';
+import { useState, useEffect } from "react";
 
-const HomeScreen = () => {
+export default function HomeScreen() {
   const router = useRouter();
   const {
     currentMonth,
@@ -18,7 +19,50 @@ const HomeScreen = () => {
     setSelectedDate,
     goToToday,
   } = useCalendar(MOCK_EVENTS);
+  
+  const [events, setEvents] = useState([]);
+  // This method fetches the records from the database.
+  useEffect(() => {
+    // console.log("Fetched data:", events);
+    async function getEvents() {
+      // console.log("Fetching events from:", process.env.EXPO_PUBLIC_BACKEND_URL);
+      // const response = await fetch('${process.env.EXPO_PUBLIC_BACKEND_URL}/');
+      const response = await fetch(`http://localhost:5050/`);
+      if (!response.ok) {
+        const message = `An error occurred: ${response.statusText}`;
+        console.error(message);
+        return;
+      }
+      console.log("response:", response);
+      const events = await response.json();
+      setEvents(events);
+    }
+    getEvents();
+    return;
+  }, [events.length]);
 
+  function eventList() {
+    return events.map((event) => (
+      <View key={event.id} style={styles.eventCard}>
+        <View style={styles.eventHeader}>
+          <View>
+            <Text style={styles.eventTitle}>{event.title}</Text>
+            <Text style={styles.eventCategory}>{event.category}</Text>
+          </View>
+          <View style={styles.eventInfo}>
+            <Text style={styles.eventDetails}>Start: {event.start}</Text>
+            <Text style={styles.eventDetails}>End: {event.end}</Text>
+            <Text style={styles.eventDetails}>Location: {event.location}</Text>
+          </View>
+        </View>
+        <Text style={styles.eventDescription}>{event.description}</Text>
+        {event.image && (
+          <Image source={{ uri: 'https://via.placeholder.com/100' }} style={styles.eventImage} />
+        )}
+        <Text style={styles.eventLimit}>Cur joined / limit</Text>
+      </View>
+    ))
+  }
 
   return (
     <View style={styles.container}>
@@ -55,26 +99,7 @@ const HomeScreen = () => {
 
           {/* Event Cards */}
           <ScrollView>
-            {MOCK_EVENTS.map((event) => (
-              <View key={event.id} style={styles.eventCard}>
-                <View style={styles.eventHeader}>
-                  <View>
-                    <Text style={styles.eventTitle}>{event.title}</Text>
-                    <Text style={styles.eventCategory}>{event.category}</Text>
-                  </View>
-                  <View style={styles.eventInfo}>
-                    <Text style={styles.eventDetails}>Start: {event.start}</Text>
-                    <Text style={styles.eventDetails}>End: {event.end}</Text>
-                    <Text style={styles.eventDetails}>Location: {event.location}</Text>
-                  </View>
-                </View>
-                <Text style={styles.eventDescription}>{event.description}</Text>
-                {event.image && (
-                  <Image source={{ uri: 'https://via.placeholder.com/100' }} style={styles.eventImage} />
-                )}
-                <Text style={styles.eventLimit}>Cur joined / limit</Text>
-              </View>
-            ))}
+            {eventList()}
           </ScrollView>
         </View>
       </View>
@@ -177,4 +202,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+// export default HomeScreen;

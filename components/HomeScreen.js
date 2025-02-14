@@ -1,11 +1,12 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image, StatusBar } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image, StatusBar, Modal } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { COLORS, MOCK_EVENTS } from '../utils/constants';
 import { useCalendar } from '../hooks/useCalendar';
 import { useRouter } from 'expo-router';
 import TopNavBar from './layout/TopNavBar';
 import Sidebar from './layout/Sidebar';
+import CreateEventForm from './CreateEventForm';
 
 const HomeScreen = () => {
   const router = useRouter();
@@ -20,8 +21,19 @@ const HomeScreen = () => {
   } = useCalendar(MOCK_EVENTS);
 
 
+  const [isCreateEventFormVisible, setIsCreateEventFormVisible] = useState(false);
+
   return (
     <View style={styles.container}>
+      {/* Create event modal */}
+      <Modal
+        transparent={true}
+        visible={isCreateEventFormVisible}
+        onRequestClose={() => setIsCreateEventFormVisible(false)}
+      >
+        <CreateEventForm setIsCreateEventFormVisible={setIsCreateEventFormVisible} />
+      </Modal>
+
       <StatusBar hidden={true} />
       <TopNavBar activeTab="Events" />
       
@@ -47,7 +59,7 @@ const HomeScreen = () => {
               <TouchableOpacity style={styles.filterDropdown}>
                 <Text style={styles.filterText}>Filter</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.addEventButton}>
+              <TouchableOpacity style={styles.addEventButton} onPress={() => setIsCreateEventFormVisible(true)}>
                 <Text style={styles.filterText}>Add Event</Text>
               </TouchableOpacity>
             </View>

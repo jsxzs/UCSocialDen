@@ -1,11 +1,10 @@
-import express from "express";
-import { eventController } from '../controller/eventController.js';
+const express = require("express");
+const getEvents = require("../controller/eventController");
 
-const eventRoutes = express.Router();
 
-eventRoutes.get("/", async (req, res) => {
-  let results = await eventController.getAllEvents();
-  res.send(results).status(200);
-});
+const router = express.Router();
 
-export { eventRoutes };
+router.get("/", getEvents);
+
+
+module.exports = router;

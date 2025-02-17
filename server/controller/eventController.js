@@ -1,24 +1,25 @@
-// This will help us connect to the database
-import db from "../models/connection.js";
+const Event = require("../models/eventModel");
 
-// This help convert the id from string to ObjectId for the _id.
-import { ObjectId } from "mongodb";
+//get all events
+const getEvents = async (req, res) => {
+  try {
+    const events = await Event.find({}); 
+    res.json(events);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch events" });
+  }
+};
 
-// TODO: Implement database APIs (e.g. getEvent, createEvent, updateEvent, deleteEvent)
-const eventController = {
-  async getAllEvents(req, res) {
-    // try {
-    //   const events = await Event.find()
-    //     .sort({ start: 1 }) // Sort by start date ascending
-    //     .select('-__v'); // Exclude version key
-      
-    //   res.json(events);
-    // } catch (error) {
-    //   console.error('Error fetching events:', error);
-    //   res.status(500).json({ message: 'Error fetching events' });
-    // }
-    console.log("getAllEvents");
-    let results=[
+
+
+
+
+module.exports = getEvents;
+
+
+
+/* 
+let results=[
         { 
           id: '1', 
           title: 'Event Name', 
@@ -57,3 +58,4 @@ const eventController = {
 };
 
 export { eventController };
+*/

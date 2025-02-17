@@ -29,7 +29,9 @@ export default function HomeScreen() {
     async function getEvents() {
       // console.log("Fetching events from:", process.env.EXPO_PUBLIC_BACKEND_URL);
       // const response = await fetch('${process.env.EXPO_PUBLIC_BACKEND_URL}/');
-      const response = await fetch(`http://localhost:5050/`);
+      // const response = await fetch(`http://localhost:5050/`);
+      const response = await fetch(`http://localhost:5002/api/events`);
+
       if (!response.ok) {
         const message = `An error occurred: ${response.statusText}`;
         console.error(message);
@@ -45,15 +47,15 @@ export default function HomeScreen() {
 
   function eventList() {
     return events.map((event) => (
-      <View key={event.id} style={styles.eventCard}>
+      <View key={event._id} style={styles.eventCard}>
         <View style={styles.eventHeader}>
           <View>
-            <Text style={styles.eventTitle}>{event.title}</Text>
-            <Text style={styles.eventCategory}>{event.category}</Text>
+            <Text style={styles.eventTitle}>{event.name}</Text>
+            <Text style={styles.eventCategory}>{event.tags}</Text>
           </View>
           <View style={styles.eventInfo}>
-            <Text style={styles.eventDetails}>Start: {event.start}</Text>
-            <Text style={styles.eventDetails}>End: {event.end}</Text>
+            <Text style={styles.eventDetails}>Start: {event.start_time}</Text>
+            <Text style={styles.eventDetails}>End: {event.end_time}</Text>
             <Text style={styles.eventDetails}>Location: {event.location}</Text>
           </View>
         </View>
@@ -122,11 +124,7 @@ export default function HomeScreen() {
 
           {/* Event Cards */}
           <ScrollView>
-          {MOCK_EVENTS.map((event) => (
-            <TouchableOpacity onPress={() => setSelectedEvent(event)}>
-              <EventCard key={event.id} event={event} />
-            </TouchableOpacity> 
-          ))}
+            {eventList()}
           </ScrollView>
         </View>
       </View>

@@ -1,10 +1,10 @@
 const express = require("express");
-const getEvents = require("../controller/eventController");
+const {getAllEvents, createEvent} = require("../controller/eventController");
 
 
 const router = express.Router();
 
-router.get("/", getEvents);
-
+router.get("/", getAllEvents);
+router.post("/", createEvent);
 
 module.exports = router;

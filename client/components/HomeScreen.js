@@ -6,9 +6,12 @@ import { useCalendar } from '../hooks/useCalendar';
 import { useRouter } from 'expo-router';
 import TopNavBar from './layout/TopNavBar';
 import Sidebar from './layout/Sidebar';
-import CreateEventForm from './CreateEventForm';
+// import CreateEventForm from './CreateEventForm';
+import CreateEventForm from './CreateEventForm_sxj';
 import EventCard from './EventCard';
 import EventDetails from './EventDetails';
+
+const SERVER_PORT = 5002; //process.env.PORT;
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -23,14 +26,14 @@ export default function HomeScreen() {
   } = useCalendar(MOCK_EVENTS);
   
   const [events, setEvents] = useState([]);
-  // This method fetches the records from the database.
+  // This method fetches the events from the database.
   useEffect(() => {
     // console.log("Fetched data:", events);
     async function getEvents() {
       // console.log("Fetching events from:", process.env.EXPO_PUBLIC_BACKEND_URL);
       // const response = await fetch('${process.env.EXPO_PUBLIC_BACKEND_URL}/');
       // const response = await fetch(`http://localhost:5050/`);
-      const response = await fetch(`http://localhost:5002/api/events`);
+      const response = await fetch(`http://localhost:${SERVER_PORT}/api/events`);
 
       if (!response.ok) {
         const message = `An error occurred: ${response.statusText}`;

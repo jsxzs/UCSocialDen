@@ -20,4 +20,5 @@ const EventSchema = new Schema({
 
 // EventSchema.plugin(AutoIncrement, { inc_field: "_id" });
 
-module.exports = mongoose.model("Event", EventSchema);
+const Event = mongoose.model("Event", EventSchema);
+module.exports = Event;

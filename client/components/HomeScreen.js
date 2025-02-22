@@ -28,11 +28,7 @@ export default function HomeScreen() {
   const [events, setEvents] = useState([]);
   // This method fetches the events from the database.
   useEffect(() => {
-    // console.log("Fetched data:", events);
     async function getEvents() {
-      // console.log("Fetching events from:", process.env.EXPO_PUBLIC_BACKEND_URL);
-      // const response = await fetch('${process.env.EXPO_PUBLIC_BACKEND_URL}/');
-      // const response = await fetch(`http://localhost:5050/`);
       const response = await fetch(`http://localhost:${SERVER_PORT}/api/events`);
 
       if (!response.ok) {
@@ -66,7 +62,7 @@ export default function HomeScreen() {
         {event.image && (
           <Image source={{ uri: 'https://via.placeholder.com/100' }} style={styles.eventImage} />
         )}
-        <Text style={styles.eventLimit}>Cur joined / limit</Text>
+        <Text style={styles.eventLimit}>{event.cur_joined} / {event.participant_limit}</Text>
       </View>
     ))
   }

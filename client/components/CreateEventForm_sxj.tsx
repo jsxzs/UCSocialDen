@@ -37,7 +37,7 @@ export default function CreateEventForm({ setIsCreateEventFormVisible }: CreateE
       return;
     }
     // console.log
-    // Construct event data payload
+    // Construct event data form
     const eventData = {
       name,
       start_time,

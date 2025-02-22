@@ -1,10 +1,9 @@
-const {Event} = require("../models/eventModel");
-const { ObjectId } = require('mongodb');
+const Event = require("../models/eventModel");
 
 //get all events
 const getAllEvents = async (req, res) => {
   try {
-    const allevents = await EventDB.find({});
+    const allevents = await Event.find({});
     res.status(200).json(allevents);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch events" });
@@ -14,37 +13,27 @@ const getAllEvents = async (req, res) => {
 // create an event
 const createEvent = async (req, res) => {
   try {
-    const newevent = req.body;
+    let newevent = req.body;
 
-    // newevent['_id'] = 1;
-    // console.log(1);
-    // // convert time string to Date objective
-    // let starttime = newevent['start_time'];
-    // let endtime = newevent['end_time'];
-    // newevent['start_time'] = new Date(starttime);
-    // newevent['end_time'] = new Date(endtime);
+    // Convert time strings to Date objects (if they are provided as strings)
+    if (typeof newevent.start_time === "string") {
+      newevent.start_time = new Date(newevent.start_time);
+    }
+    if (typeof newevent.end_time === "string") {
+      newevent.end_time = new Date(newevent.end_time);
+    }
 
-    // // get current time as create_time
-    // newevent['create_time'] = new Date();
+    // get current time as create_time
+    newevent['create_time'] = new Date();
 
-    // //TODO: Replace the author with real user
-    // newevent['author'] = "null";
-    // // newevent = {...newevent, author: "null"};
+    // TODO: Replace the author with real user
+    newevent['author'] = "null";
 
-    newevent={
-      _id: 1,
-      name: "dinner",
-      start_time: new Date(),
-      end_time: new Date(),
-      location: "adwda",
-      author: "wdwad",
-    };
     console.log(newevent);
-    // let  newEvent = new Event(newevent);
-    // await ewEvent.save();
-    await Event.insertOne(newevent);
-    res.status(201).json(newevent);
+    const newEvent = await Event.create(newevent);
+    res.status(201).json(newEvent);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Failed to create an event" });
   }
 };

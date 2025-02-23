@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node --env-file=config.env server",
     "dev": "nodemon --env-file=config.env server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -19,5 +19,10 @@
     "mongoose": "^8.10.0",
     "mongoose-sequence": "^6.0.1",
     "nodemon": "^3.1.9"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "mongodb-memory-server": "^10.1.4",
+    "supertest": "^7.0.0"
   }
 }
